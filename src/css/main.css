@@ -31,3 +31,8 @@ main {
 a {
 	color: var(--text-color);
 }
+
+br {
+   display: block;
+   margin: 0.5rem 0;
+}
