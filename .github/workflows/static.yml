@@ -19,11 +19,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
             # since this is a raw js project i'm not gonna bother with the dist stuff. just deploy my src/ folder, please.
-          path: './src'
+          path: 'src'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
