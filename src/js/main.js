@@ -7,12 +7,38 @@ function checkForData() {
     const deviceID = localStorage.getItem('deviceID');
 
     if (apiKey && deviceID) {
-        console.log('items present');
+        renderControlPanel();
     } else {
         renderSetup();
         listenForInputs();
     }
 }
+
+function renderControlPanel() {
+
+
+
+}
+
+/*
+
+const apiHost = 'https://openapi.api.govee.com';
+const contentType = 'application/json';
+const apiKey = localStorage.getItem('apiKey');
+
+fetch(`${apiHost}/router/api/v1/user/devices`, {
+    headers: {
+        'Govee-API-Key': atob(apiKey),
+        'Content-Type': contentType
+    }
+})
+.catch(error => console.log('Error while fetching:', error))
+.then(response => response.json())
+.then((response) => {
+    console.log(response)
+})
+
+ */
 
 function renderSetup() {
     let containerDOM = document.querySelector('#setupContainer');
