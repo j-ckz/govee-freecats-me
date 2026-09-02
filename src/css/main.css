@@ -36,3 +36,9 @@ br {
    display: block;
    margin: 0.5rem 0;
 }
+
+@media screen and (max-width: 1000px) {
+	main {
+		width: 95% !important;
+	}
+}

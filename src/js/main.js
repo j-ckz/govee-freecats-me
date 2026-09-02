@@ -1,3 +1,6 @@
+let containerDOM = document.querySelector('#setupContainer');
+function insertElement(element) { containerDOM.appendChild(element) };
+
 window.addEventListener("load", (event) => {
     checkForData();
 });
@@ -16,7 +19,66 @@ function checkForData() {
 
 function renderControlPanel() {
 
+    /*
+    power:
+    <button (pwron)>; <button (pwroff)>
 
+    brightness:
+    <label>; <input>; <button/submit>;
+
+    color:
+    <label>; <input>; <button/submit>;
+
+    i should maybe add something that can change the device ID on the side and/or show all the device IDs for easy switching. devids with like the product name or somehting.
+    */
+
+    function createInput(name, textContent, type) {
+        const inputElement = document.createElement('input');
+        const labelElement = document.createElement('label');
+        const breakElement = document.createElement('br');
+        const buttonElement = document.createElement('button');
+        function insertElement(element) { containerDOM.appendChild(element) };
+
+        if (name !== 'powerInput') {
+            labelElement.textContent = textContent;
+            labelElement.for = name;
+
+            inputElement.name = name;
+            inputElement.id = name;
+            inputElement.type = type;
+
+            buttonElement.id = `${name}Submit`;
+            buttonElement.textContent = 'submit';
+
+            if (name === 'brightnessInput') {
+                inputElement.min = 0;
+                inputElement.max = 100;
+            }
+        } else if (name === 'powerInput') {
+
+        }
+
+        insertElement(labelElement);
+        insertElement(inputElement);
+        insertElement(buttonElement);
+        insertElement(breakElement);
+    }
+
+    function createPowerButton(type) {
+        const powerButton = document.createElement('button');
+        const breakElement = document.createElement('br');
+
+        powerButton.id = `power${type}Button`;
+        powerButton.textContent = `power ${type}`;
+
+        insertElement(powerButton);
+    }
+
+    createPowerButton('on');
+    createPowerButton('off');
+    insertElement(document.createElement('br'));
+    createInput('brightnessInput', 'brightness: ', 'range');
+    createInput('colorInput', 'color: ', 'color');
 
 }
 
@@ -41,17 +103,14 @@ fetch(`${apiHost}/router/api/v1/user/devices`, {
  */
 
 function renderSetup() {
-    let containerDOM = document.querySelector('#setupContainer');
-
     const headerElement = document.createElement('h2');
     const headerElementText = document.createTextNode('setup your lights');
 
-    function renderInputs(name, textContent, type, end) {
+    function createInput(name, textContent, type, end) {
         const inputElement = document.createElement('input');
         const labelElement = document.createElement('label');
         const breakElement = document.createElement('br');
         const buttonElement = document.createElement('button');
-        function insertElement(element) { containerDOM.appendChild(element) };
 
         labelElement.htmlFor = name;
         labelElement.textContent = textContent;
@@ -79,10 +138,10 @@ function renderSetup() {
     containerDOM.appendChild(headerElement);
 
     // lets generate the first form
-    renderInputs('apiKeyInput', 'api key: ', 'password', false);
+    createInput('apiKeyInput', 'api key: ', 'password', false);
 
     // second form, now.
-    renderInputs('deviceIDInput', 'device ID: ', 'text', true);
+    createInput('deviceIDInput', 'device ID: ', 'text', true);
 }
 
 function listenForInputs() {
