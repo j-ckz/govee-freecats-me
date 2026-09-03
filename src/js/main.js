@@ -128,6 +128,8 @@ function submitData(type, value) {
     const deviceID = localStorage.getItem('deviceID')
     let requestBody;
 
+    // parseInt(value, 16);
+
     if (type === 'brightness') {
         requestBody = JSON.stringify({
             requestId: crypto.randomUUID(),
@@ -154,6 +156,20 @@ function submitData(type, value) {
                 }
             }
         })
+    } else if (type === 'color') {
+        const color = parseInt(value.slice(1), 16);
+        requestBody = JSON.stringify({
+        requestId: crypto.randomUUID(),
+        payload: {
+            "sku": "H618F",
+            "device": deviceID,
+            "capability": {
+                "type": "devices.capabilities.color_setting",
+                "instance": 'colorRgb',
+                "value": color
+            }
+        }
+        })
     }
     fetch(apiHost, {
         method: "POST",
@@ -164,20 +180,6 @@ function submitData(type, value) {
         body: requestBody
     })
 
-        /*
-
-{
-  "requestId": "1",
-  "payload": {
-    "sku": "H605C",
-    "device": "64:09:C5:32:37:36:2D:13",
-    "capability": {
-      "type": "devices.capabilities.range",
-      "instance": "brightness",
-      "value": 50
-    }
-  }
-} */
     .catch(error => console.log('Error while fetching:', error))
     .then(response => response.json())
 
@@ -232,6 +234,9 @@ function listenForInputs(type) {
             submitData('brightness', brightness);
         });
 
-        colorSubmitDOM.addEventListener('click', () => { });
+        colorSubmitDOM.addEventListener('click', () => {
+            const color = colorDOM.value;
+            submitData('color', color);
+        });
     }
 }
